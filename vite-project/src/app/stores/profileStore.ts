@@ -9,6 +9,7 @@ export default class ProfileStore {
     uploading = false;
     mainLoading = false;
     delLoading = false;
+    updateLoading = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -89,6 +90,23 @@ export default class ProfileStore {
             runInAction(() => {
                 this.delLoading = false;
             });
+            console.log(error);
+        }
+    }
+
+    updateProfile = async (profile: Partial<Profile>) => {
+        this.updateLoading = true;
+        try {
+            await agent.Profiles.update(profile);
+            runInAction(() => {
+                if (profile.displayName && profile.displayName !== store.userStore.user?.displayName) {
+                    store.userStore.setDisplayName(profile.displayName);
+                }
+                this.profile = { ...this.profile, ...profile as Profile };
+                this.updateLoading = false;
+            })
+        } catch (error) {
+            runInAction(() => { this.updateLoading = false; });
             console.log(error);
         }
     }
