@@ -41,7 +41,7 @@ export default observer(function ProfileActivities() {
                     onTabChange={(e, data) => handleTabChange(e, data)}
                 />
                 <br />
-                <Card.Group itemsPerRow={4}>
+                <Card.Group itemsPerRow={4} style={{ marginTop: 10, marginBottom:10 }}>
                     {userActivities.map((activity: UserActivity) => (
                         <Card
                             as={Link}
